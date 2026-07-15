@@ -62,7 +62,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
         {/* Features */}
         <ul className="mt-4 space-y-1.5">
-          {project.features.slice(0, 4).map((feat) => (
+          {project.features.slice(0, 4).map((feat: string) => (
             <li key={feat} className="flex items-center gap-2 text-xs text-muted-foreground">
               <div className="w-1 h-1 rounded-full bg-blue-400 shrink-0" />
               {feat}
@@ -75,7 +75,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
         {/* Stack */}
         <div className="flex flex-wrap gap-1.5 mt-5">
-          {project.stack.map((tech) => (
+          {project.stack.map((tech: string) => (
             <span key={tech} className="px-2.5 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/10 text-muted-foreground">
               {tech}
             </span>

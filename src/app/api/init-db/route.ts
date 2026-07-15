@@ -3,7 +3,6 @@ import { db } from "@/lib/firebase";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { projects } from "@/data/projects";
 import { timelineEntries } from "@/data/timeline";
-import { skillsCategories } from "@/data/skills";
 import { achievements } from "@/data/achievements";
 
 export async function GET() {

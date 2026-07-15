@@ -87,7 +87,7 @@ export function ProfilesSection() {
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-3 mt-5">
-                  {profile.stats.map((stat) => (
+                  {profile.stats.map((stat: { label: string; value: string }) => (
                     <div key={stat.label} className="bg-white/5 rounded-xl p-3">
                       <p className={`text-lg font-bold bg-gradient-to-r ${profile.color} bg-clip-text text-transparent`}>
                         {stat.value}

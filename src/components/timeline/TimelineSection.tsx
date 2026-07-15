@@ -111,7 +111,7 @@ export function TimelineSection() {
                         {/* Tags */}
                         {entry.tags && (
                           <div className="flex flex-wrap justify-center gap-1.5 mt-4">
-                            {entry.tags.map((tag) => (
+                            {entry.tags.map((tag: string) => (
                               <span key={tag} className="text-[10px] sm:text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-muted-foreground">
                                 {tag}
                               </span>
