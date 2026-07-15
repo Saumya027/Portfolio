@@ -52,7 +52,7 @@ export const projects: Project[] = [
     github: "https://github.com/Saumya027/ServiceConnect",
     live: "https://serviceconnect-three.vercel.app/",
     status: "completed",
-    color: "from-teal-500/20 to-emerald-500/20",
+    color: "from-orange-500/20 to-rose-500/20",
   },
   {
     id: "pharmasense",
@@ -72,6 +72,6 @@ export const projects: Project[] = [
     github: "https://github.com/Saumya027/PharmaSense",
     live: "https://pharmasense-818d4.web.app/",
     status: "completed",
-    color: "from-orange-500/20 to-rose-500/20",
+    color: "from-teal-500/20 to-emerald-500/20",
   },
 ];
