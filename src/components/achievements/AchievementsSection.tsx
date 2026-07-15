@@ -2,11 +2,10 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import {
-  Code2, Trophy, GraduationCap, Globe, Zap, FolderKanban
-} from "lucide-react";
+import { Code2, Trophy, GraduationCap, Globe, Zap, FolderKanban } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { achievements as fallbackAchievements } from "@/data/achievements";
 
 const iconMap: Record<string, React.ReactNode> = {
   Code2: <Code2 size={24} />,
@@ -14,24 +13,26 @@ const iconMap: Record<string, React.ReactNode> = {
   GraduationCap: <GraduationCap size={24} />,
   Globe: <Globe size={24} />,
   Zap: <Zap size={24} />,
-  FolderKanban: <FolderKanban size={24} />,
+  FolderKanban: <FolderKanban size={24} />
 };
 
 export function AchievementsSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [achievements, setAchievements] = useState<any[]>([]);
+  const [achievements, setAchievements] = useState<any[]>(fallbackAchievements);
 
   useEffect(() => {
     async function fetchAchievements() {
       try {
         const snap = await getDocs(collection(db, "achievements"));
-        const data: any[] = [];
-        snap.forEach(doc => data.push(doc.data()));
-        data.sort((a, b) => a.order - b.order);
-        setAchievements(data);
+        if (!snap.empty) {
+          const data: any[] = [];
+          snap.forEach(doc => data.push(doc.data()));
+          data.sort((a, b) => a.order - b.order);
+          setAchievements(data);
+        }
       } catch (err) {
-        console.error("Failed to fetch achievements");
+        console.error("Failed to fetch achievements", err);
       }
     }
     fetchAchievements();

@@ -7,6 +7,60 @@ import { GithubIcon, LinkedinIcon, LeetcodeIcon } from "@/components/ui/BrandIco
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
+const fallbackProfiles = [
+  {
+    id: "github",
+    name: "GitHub",
+    handle: "@Saumya027",
+    url: "https://github.com/Saumya027",
+    iconName: "github",
+    color: "from-gray-600 to-gray-800",
+    borderColor: "hover:border-gray-500/50",
+    stats: [
+      { label: "Status", value: "Active Contributor" },
+      { label: "Focus", value: "Full-Stack & AI" },
+    ],
+    description: "Full-stack projects, AI systems, and open source contributions.",
+    badge: "Open Source",
+    badgeColor: "bg-green-500/10 text-green-400 border-green-500/20",
+    order: 0
+  },
+  {
+    id: "linkedin",
+    name: "LinkedIn",
+    handle: "saumya-pandey-747421348",
+    url: "https://linkedin.com/in/saumya-pandey-747421348",
+    iconName: "linkedin",
+    color: "from-blue-600 to-blue-800",
+    borderColor: "hover:border-blue-500/50",
+    stats: [
+      { label: "Network", value: "Active" },
+      { label: "Status", value: "Open to Work" },
+    ],
+    description: "Professional network, experience highlights, and career milestones.",
+    badge: "Professional",
+    badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    order: 1
+  },
+  {
+    id: "leetcode",
+    name: "LeetCode",
+    handle: "SaumyaP0107",
+    url: "https://leetcode.com/SaumyaP0107",
+    iconName: "leetcode",
+    color: "from-orange-500 to-yellow-600",
+    borderColor: "hover:border-orange-500/50",
+    stats: [
+      { label: "Problems Solved", value: "300+" },
+      { label: "Contest Rating", value: "1520+" },
+    ],
+    description: "300+ problems solved across Easy, Medium, and Hard.",
+    badge: "Competitive",
+    badgeColor: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+    order: 2
+  }
+];
+
 const iconMap: Record<string, React.ReactNode> = {
   github: <GithubIcon size={28} />,
   linkedin: <LinkedinIcon size={28} />,
@@ -16,18 +70,20 @@ const iconMap: Record<string, React.ReactNode> = {
 export function ProfilesSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [profiles, setProfiles] = useState<any[]>([]);
+  const [profiles, setProfiles] = useState<any[]>(fallbackProfiles);
 
   useEffect(() => {
     async function fetchProfiles() {
       try {
         const snap = await getDocs(collection(db, "profiles"));
-        const data: any[] = [];
-        snap.forEach(doc => data.push(doc.data()));
-        data.sort((a, b) => a.order - b.order);
-        setProfiles(data);
+        if (!snap.empty) {
+          const data: any[] = [];
+          snap.forEach(doc => data.push(doc.data()));
+          data.sort((a, b) => a.order - b.order);
+          setProfiles(data);
+        }
       } catch (err) {
-        console.error("Failed to fetch profiles");
+        console.error("Failed to fetch profiles", err);
       }
     }
     fetchProfiles();

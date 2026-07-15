@@ -1,16 +1,16 @@
 "use client";
-
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { ProjectCard } from "./ProjectCard";
 import { ArrowRight } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { projects as fallbackProjects } from "@/data/projects";
 
 export function ProjectsSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>(fallbackProjects);
 
   useEffect(() => {
     async function fetchProjects() {

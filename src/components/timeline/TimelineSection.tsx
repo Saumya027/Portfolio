@@ -5,6 +5,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { GraduationCap, Pill, Zap, MapPin, Globe, Shield, Calendar, Briefcase, Award } from "lucide-react";
+import { timelineEntries as fallbackTimeline } from "@/data/timeline";
 
 const iconMap: Record<string, React.ReactNode> = {
   GraduationCap: <GraduationCap size={20} />,
@@ -21,18 +22,20 @@ const iconMap: Record<string, React.ReactNode> = {
 export function TimelineSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [timelineEntries, setTimelineEntries] = useState<any[]>([]);
+  const [timelineEntries, setTimelineEntries] = useState<any[]>(fallbackTimeline);
 
   useEffect(() => {
     async function fetchTimeline() {
       try {
         const snap = await getDocs(collection(db, "timeline"));
-        const data: any[] = [];
-        snap.forEach(doc => data.push(doc.data()));
-        data.sort((a, b) => a.order - b.order);
-        setTimelineEntries(data);
+        if (!snap.empty) {
+          const data: any[] = [];
+          snap.forEach(doc => data.push(doc.data()));
+          data.sort((a, b) => a.order - b.order);
+          setTimelineEntries(data);
+        }
       } catch (err) {
-        console.error("Failed to fetch timeline");
+        console.error("Failed to fetch timeline", err);
       }
     }
     fetchTimeline();
