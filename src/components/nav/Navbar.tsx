@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
-import { Sun, Moon, Menu, X, Terminal } from "lucide-react";
+import { Sun, Moon, Menu, X, Command } from "lucide-react";
+import { GithubIcon } from "@/components/ui/BrandIcons";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -67,51 +68,48 @@ export function Navbar() {
             onClick={() => scrollToSection("#hero")}
             className="flex items-center gap-2 font-bold text-lg tracking-tight"
           >
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center text-white text-sm font-bold">
-              SP
-            </span>
-            <span className="hidden sm:block gradient-text-blue">Saumya</span>
+            <span className="hidden sm:block gradient-text-primary text-xl">Saumya Pandey</span>
+            <span className="sm:hidden gradient-text-primary text-xl">Saumya</span>
           </button>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.href.replace("#", "");
-              return (
-                <button
-                  key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive
-                      ? "text-foreground bg-white/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                  }`}
-                >
-                  {link.label}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Right actions */}
-          <div className="flex items-center gap-2">
-            {/* Command palette hint */}
-            <button
-              onClick={() => {
-                const e = new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true });
-                window.dispatchEvent(e);
+          <nav className="hidden md:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(link.href);
               }}
-              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-muted-foreground bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
+              className={`text-sm font-medium transition-colors hover:text-foreground ${
+                activeSection === link.href.replace("#", "")
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
             >
-              <Terminal size={12} />
-              <span>⌘K</span>
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-2">
+          {/* Command search trigger */}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("open-command-palette"))}
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-muted-foreground bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20 transition-colors border border-black/10 dark:border-white/10"
+            >
+              <Command size={14} />
+              <span className="text-foreground">Search</span>
+              <kbd className="font-mono bg-black/10 dark:bg-white/20 px-1 rounded ml-1 text-foreground">⌘K</kbd>
             </button>
 
             {/* Theme toggle */}
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all"
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-black/10 dark:hover:bg-white/10 transition-all"
                 aria-label="Toggle theme"
               >
                 <AnimatePresence mode="wait">
@@ -132,7 +130,7 @@ export function Navbar() {
             <a
               href="#contact"
               onClick={(e) => { e.preventDefault(); scrollToSection("#contact"); }}
-              className="hidden sm:flex items-center gap-1 px-4 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-500 to-violet-500 text-white hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/25"
+              className="hidden sm:flex items-center gap-1 px-4 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:opacity-90 transition-opacity shadow-lg shadow-orange-500/25"
             >
               Hire Me
             </a>

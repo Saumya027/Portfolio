@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "leetcode.com",
       },
+      {
+        protocol: "https",
+        hostname: "image.thum.io",
+      },
     ],
   },
   async headers() {

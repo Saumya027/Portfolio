@@ -18,8 +18,8 @@ export function FloatingIcons() {
       {techIcons.map((icon, i) => {
         const angle = (i / techIcons.length) * Math.PI * 2;
         const radius = 52; // percent from center
-        const x = 50 + radius * Math.cos(angle);
-        const y = 50 + radius * Math.sin(angle) * 0.6;
+        const x = (50 + radius * Math.cos(angle)).toFixed(2);
+        const y = (50 + radius * Math.sin(angle) * 0.6).toFixed(2);
         const delay = i * 0.3;
         const duration = 3 + i * 0.5;
 
@@ -28,10 +28,10 @@ export function FloatingIcons() {
             key={icon.label}
             className="absolute"
             style={{ left: `${x}%`, top: `${y}%` }}
-            initial={{ opacity: 0, scale: 0 }}
+            initial={{ opacity: 0, scale: 0, y: 0 }}
             animate={{
-              opacity: [0, 0.8, 0.8],
-              scale: [0, 1, 1],
+              opacity: 0.8,
+              scale: 1,
               y: [0, -12, 0],
             }}
             transition={{

@@ -1,15 +1,31 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
-const stats = [
-  { label: "CGPA", value: "9.64/10" },
-  { label: "LeetCode", value: "300+" },
-  { label: "GSSoC", value: "2026" },
-  { label: "Stack", value: "AI + Full Stack" },
-];
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 export function HeroStats() {
+  const [stats, setStats] = useState([
+    { label: "CGPA", value: "9.64/10" },
+    { label: "LeetCode", value: "300+" },
+    { label: "GSSoC", value: "2026" },
+    { label: "Stack", value: "AI + Full Stack" },
+  ]);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const snap = await getDoc(doc(db, "general", "info"));
+        if (snap.exists() && snap.data().heroStats) {
+          setStats(snap.data().heroStats);
+        }
+      } catch (err) {
+        console.error("Failed to fetch hero stats");
+      }
+    }
+    fetchStats();
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
